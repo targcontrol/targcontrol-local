@@ -1,0 +1,3944 @@
+openapi: 3.0.1
+info:
+  title: TargControl Local External API (En)
+  description: ''
+  version: 1.0.0
+servers:
+  - url: ../
+security:
+  - APIKeyHeader: [ ]
+tags:
+  - name: Access Events
+    description: Access events
+  - name: Access Points
+    description: Access points
+  - name: Employee Categories
+    description: Categories of employees
+  - name: Employee Groups
+    description: Groups of employees
+  - name: Employee Identifiers
+    description: Employees identifiers
+  - name: Employee Papers
+    description: Documents of employees
+  - name: Employee Passes
+    description: Passing employees
+  - name: Employee Photo
+    description: Photos of employees
+  - name: Employee Positions
+    description: Positions of employees
+  - name: Employee Profile
+    description: Employees profile template
+  - name: Employee Schedules
+    description: Calendar events and events of the employee schedule
+  - name: Employees
+    description: Employees
+  - name: Time Calendar Events
+    description: Calendar events of employees
+  - name: Time Schedule Events
+    description: Working graphs of employees
+  - name: Time Sheets
+    description: Table for employees
+  - name: Time Tracking Objects
+    description: Objects
+  - name: Time Tracking Statistics
+    description: Business accounting statistics
+paths:
+  /external/api/access-events/query:
+    post:
+      tags:
+        - Access Events
+      summary: Get filtered access events
+      operationId: get-filtered-access-events
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/access-event-query-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/access-event'
+      x-codegen-request-body-name: body
+  /external/api/access-events/sync:
+    post:
+      tags:
+        - Access Events
+      summary: Add access events
+      operationId: save-access-events
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/access-event-sync'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/access-event'
+      x-codegen-request-body-name: body
+  /external/api/access-points:
+    get:
+      tags:
+        - Access Points
+      summary: Get all access points
+      operationId: get-all
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/external-access-point-response'
+  /external/api/access-points/batch:
+    post:
+      tags:
+        - Access Points
+      summary: Create new access points
+      operationId: create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/external-access-point-request'
+        required: true
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/external-access-point-response'
+      x-codegen-request-body-name: body
+  /external/api/access-points/{id}:
+    put:
+      tags:
+        - Access Points
+      summary: Change the access point
+      operationId: update-access-point
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/external-access-point-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/external-access-point-response'
+      x-codegen-request-body-name: body
+  /external/api/access-points/deactivate/{id}:
+    post:
+      tags:
+        - Access Points
+      summary: Deactivate an access point
+      operationId: deactivate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content: { }
+  /external/api/employee-categories:
+    get:
+      tags:
+        - Employee Categories
+      summary: Get all categories of employees
+      description: All employees in the organization are obtained
+      operationId: get-employee-categories
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-category'
+  /external/api/employee-groups/query:
+    get:
+      tags:
+        - Employee Groups
+      summary: Get all groups of employees
+      operationId: get-all-employee-groups
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-group'
+    post:
+      tags:
+        - Employee Groups
+      summary: Get filtered groups of employees
+      operationId: get-filtered-employee-groups
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-group-query-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-group'
+      x-codegen-request-body-name: body
+  /external/api/employee-groups/create:
+    post:
+      tags:
+        - Employee Groups
+      summary: Create a group of employees
+      operationId: create-group
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-group'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-group'
+      x-codegen-request-body-name: body
+  /external/api/employee-groups/update/{groupId}/base:
+    put:
+      tags:
+        - Employee Groups
+      summary: Update the basic group of employees
+      operationId: update-base-group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-base-group'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-base-group'
+      x-codegen-request-body-name: body
+  /external/api/employee-groups/update/{groupId}:
+    put:
+      tags:
+        - Employee Groups
+      summary: Update a group of employees
+      operationId: update-group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-group'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-group'
+      x-codegen-request-body-name: body
+  /external/api/employee-groups/delete/{groupId}:
+    delete:
+      tags:
+        - Employee Groups
+      summary: Delete a group of employees
+      operationId: delete-group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-identifiers/query:
+    get:
+      tags:
+        - Employee Identifiers
+      summary: Get all identifiers
+      operationId: get-all-identifiers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-identifiers-response'
+  /external/api/employee-identifiers/query/{employeeId}:
+    get:
+      tags:
+        - Employee Identifiers
+      summary: Get identifiers of one employee
+      operationId: get-single-employee-identifier
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-identifiers-response'
+  /external/api/employee-identifiers/create/{employeeId}:
+    post:
+      tags:
+        - Employee Identifiers
+      summary: Create an employee identifiers
+      operationId: create-employee-identifiers
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-identifiers-query'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-identifiers-response'
+      x-codegen-request-body-name: body
+  /external/api/employee-identifiers/update/{employeeId}:
+    post:
+      tags:
+        - Employee Identifiers
+      summary: Update employee identifiers
+      operationId: update-employee-identifiers
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-identifiers-query'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-identifiers-response'
+      x-codegen-request-body-name: body
+  /external/api/employee-identifiers/delete/{employeeId}/{fingerType}:
+    delete:
+      tags:
+        - Employee Identifiers
+      summary: Delete an employee's fingerprints
+      operationId: delete-employee-fingerprints
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fingerType
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-paper-types:
+    get:
+      tags:
+        - Employee Papers
+      summary: Get paper types of employees
+      operationId: get-all-employee-paper-types
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-paper-type'
+  /external/api/employee-papers/query:
+    get:
+      tags:
+        - Employee Papers
+      summary: Get all employees papers
+      operationId: get-all-employee-papers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-paper'
+    post:
+      tags:
+        - Employee Papers
+      summary: Get filtered employee papers
+      operationId: get-filtered-employee-papers
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-paper-query-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-paper'
+      x-codegen-request-body-name: body
+  /external/api/employee-pass-types:
+    get:
+      tags:
+        - Employee Passes
+      summary: Get employee pass types
+      operationId: get-employee-pass-types
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-pass-type'
+  /external/api/employee-passes/query:
+    get:
+      tags:
+        - Employee Passes
+      summary: Get all the passes of employees
+      description: All the passes are obtained in the organization
+      operationId: get-all-employee-passes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-pass'
+    post:
+      tags:
+        - Employee Passes
+      summary: Get filtered passes of employees
+      operationId: get-filtered-employee-passes
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-pass-query-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-pass'
+      x-codegen-request-body-name: body
+  /external/api/employee-passes/create:
+    post:
+      tags:
+        - Employee Passes
+      summary: Create a new pass
+      operationId: create-employee-pass
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-pass-crud-request'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-pass'
+      x-codegen-request-body-name: body
+  /external/api/employee-passes/update/{passId}:
+    put:
+      tags:
+        - Employee Passes
+      summary: Change the employee's pass
+      operationId: update-employee-pass
+      parameters:
+        - name: passId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-pass-crud-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-pass'
+      x-codegen-request-body-name: body
+  /external/api/employee-passes/delete/{passId}:
+    delete:
+      tags:
+        - Employee Passes
+      summary: Remove the employee's pass
+      operationId: delete-employee-pass
+      parameters:
+        - name: passId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-photo/{employeeId}/upload:
+    post:
+      tags:
+        - Employee Photo
+      summary: Add a photo for an employee
+      description: Add a photo for an employee
+      operationId: add-photo
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: Photo of an employee
+                  format: binary
+        required: true
+      responses:
+        '201':
+          description: CREATED
+          content: { }
+  /external/api/employee-photo/{employeeId}/delete:
+    delete:
+      tags:
+        - Employee Photo
+      summary: Delete a photo from an employee
+      description: Delete a photo from an employee
+      operationId: delete-photo
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-positions:
+    get:
+      tags:
+        - Employee Positions
+      summary: Get all employees' positions
+      description: All positions in the organization are obtained
+      operationId: get-employee-positions
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-position'
+  /external/api/employee-positions/create:
+    post:
+      tags:
+        - Employee Positions
+      summary: Create a new position an employee
+      description: Create a new position an employee
+      operationId: create-employee-position
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-position'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-position'
+      x-codegen-request-body-name: body
+  /external/api/employee-profile/categories:
+    get:
+      tags:
+        - Employee Profile
+      summary: Get all categories of employees profile
+      description: Categories of the profile of employees are obtained
+      operationId: get-employee-profile-categories
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-profile-category'
+  /external/api/employee-profile/fields:
+    get:
+      tags:
+        - Employee Profile
+      summary: Get all the fields of the profile of employees
+      description: The fields of the profile of employees are obtained
+      operationId: get-employee-profile-fields
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-profile-field'
+  /external/api/employee-schedules/interval/query:
+    post:
+      tags:
+        - Employee Schedules
+      summary: Get filtered work graphs without repetitions
+      operationId: get-filtered-schedule-intervals
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-schedule-interval-query'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-schedule-interval'
+      x-codegen-request-body-name: body
+  /external/api/employees/query:
+    get:
+      tags:
+        - Employees
+      summary: Get all employees
+      operationId: get-all-employees
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee'
+    post:
+      tags:
+        - Employees
+      summary: Get filtered employees
+      operationId: get-filtered-employees
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-query-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee'
+      x-codegen-request-body-name: body
+  /external/api/employees/fire:
+    post:
+      tags:
+        - Employees
+      summary: Dismiss employees
+      operationId: fire-employees
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                format: uuid
+        required: false
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+      x-codegen-request-body-name: body
+  /external/api/employees/create:
+    post:
+      tags:
+        - Employees
+      summary: Create a new employee
+      operationId: create-employee
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-simplified-create'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-simplified-output'
+      x-codegen-request-body-name: body
+  /external/api/employees/update/{id}:
+    put:
+      tags:
+        - Employees
+      summary: Change the basic data of the employee
+      operationId: update-employee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-simplified-input'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/employee-simplified-output'
+      x-codegen-request-body-name: body
+  /external/api/employees/delete/{id}:
+    delete:
+      tags:
+        - Employees
+      summary: Delete an employee
+      operationId: delete-employee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-schedules/calendar/types:
+    get:
+      tags:
+        - Time Calendar Events
+      summary: Get all types of calendar events
+      operationId: list-calendar-event-types
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-calendar-event-type'
+  /external/api/employee-schedules/calendar/query:
+    post:
+      tags:
+        - Time Calendar Events
+      summary: Get filtered calendar events
+      operationId: get-filtered-calendar-events
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/employee-calendar-query'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-calendar-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/calendar/types/create:
+    post:
+      tags:
+        - Time Calendar Events
+      summary: Create a type of calendar event
+      operationId: add-calendar-event-type
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-calendar-event-type'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/time-calendar-event-type'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/calendar/create:
+    post:
+      tags:
+        - Time Calendar Events
+      summary: Create a calendar event
+      operationId: add-calendar-event
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-calendar-event'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/time-calendar-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/calendar/update/{calendarEventId}:
+    put:
+      tags:
+        - Time Calendar Events
+      summary: Update the calendar event
+      operationId: update-calendar-event
+      parameters:
+        - name: calendarEventId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-calendar-event'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/time-calendar-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/calendar/delete/{calendarEventId}:
+    delete:
+      tags:
+        - Time Calendar Events
+      summary: Delete a calendar event
+      operationId: delete-calendar-event
+      parameters:
+        - name: calendarEventId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/employee-schedules/schedule-event/get:
+    post:
+      tags:
+        - Time Schedule Events
+      summary: Get employee work graphs
+      operationId: get-schedule-events
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/get-time-schedule-events-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-schedule-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/schedule-event/create:
+    post:
+      tags:
+        - Time Schedule Events
+      summary: Create a work schedule
+      operationId: add-schedule-event
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-schedule-event'
+        required: false
+      responses:
+        '201':
+          description: CREATED
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/time-schedule-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/schedule-event/update/{scheduleEventId}:
+    put:
+      tags:
+        - Time Schedule Events
+      summary: Update the work schedule
+      operationId: update-schedule-event
+      parameters:
+        - name: scheduleEventId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-schedule-event'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/time-schedule-event'
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/schedule-event/batch-delete-by-ids:
+    post:
+      tags:
+        - Time Schedule Events
+      summary: Delete work schedules for ID
+      operationId: schedule-events-batch-delete-by-ids
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                format: uuid
+        required: false
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/schedule-event/batch-delete-by-query:
+    post:
+      tags:
+        - Time Schedule Events
+      summary: Delete schedules for the interval
+      operationId: schedule-event-batch-delete-by-query
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/schedule-event-batch-delete-query'
+        required: false
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+      x-codegen-request-body-name: body
+  /external/api/employee-schedules/schedule-event/delete/{scheduleEventId}:
+    delete:
+      tags:
+        - Time Schedule Events
+      summary: Delete the work schedule
+      operationId: delete-schedule-event
+      parameters:
+        - name: scheduleEventId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+          content: { }
+  /external/api/time-sheets:
+    post:
+      tags:
+        - Time Sheets
+      summary: Get tablets in a month
+      operationId: get-time-sheets-for-month
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-sheet-employee-request'
+        required: false
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-sheet-employee'
+      x-codegen-request-body-name: month
+  /external/api/time-tracking-contours:
+    get:
+      tags:
+        - Time Tracking Objects
+      summary: Get the contours of working time accounting
+      operationId: get-all-time-tracking-contours
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-tracking-contour'
+  /external/api/time-tracking-offices:
+    get:
+      tags:
+        - Time Tracking Objects
+      summary: Get objects of working time accounting (Legacy)
+      operationId: get-all-time-tracking-offices
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-tracking-object'
+  /external/api/time-tracking-objects:
+    get:
+      tags:
+        - Time Tracking Objects
+      summary: Get objects of working time accounting
+      operationId: get-all-time-tracking-objects
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/time-tracking-object'
+  /external/api/time-tracking-statistics:
+    post:
+      tags:
+        - Time Tracking Statistics
+      summary: Get statistics on working time accounting
+      operationId: get-time-tracking-statistics
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/time-tracking-statistics-request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employee-work-statistics'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    employee-rfid:
+      title: RFID employee
+      required:
+        - code
+        - employeeId
+        - id
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: RFID identifier
+          format: uuid
+        code:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: RFID
+          format: byte
+        type:
+          $ref: '#/components/schemas/employee-rfid-type'
+        employeeId:
+          type: string
+          description: The identifier of an employee who owns RFID
+          format: uuid
+    employee-account:
+      title: Employee account
+      required:
+        - accountStatus
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Account identifier related to the employee
+          format: uuid
+        accountStatus:
+          $ref: '#/components/schemas/employee-account-status'
+    base-work-interval:
+      title: The main working interval
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+        - required:
+            - accounted
+            - lastInterval
+            - lastOpenInterval
+          type: object
+          properties:
+            timeTrackingIntervalId:
+              type: string
+              description: Interval ID
+              format: uuid
+            reasonId:
+              type: string
+              description: ID reasons
+              format: uuid
+            timeTrackingContourId:
+              type: string
+              description: Contour ID
+              format: uuid
+            lastInterval:
+              type: boolean
+              description: The last interval
+            lastOpenInterval:
+              type: boolean
+              description: The last open interval
+            accounted:
+              type: boolean
+              description: From tip
+            scheduleEventId:
+              type: string
+              description: ID schedule events
+              format: uuid
+    employee-schedule-interval:
+      title: Schedule without repetitions
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique graphic identifier
+          format: uuid
+        employeeId:
+          type: string
+          description: The identifier of the employee who owns the schedule
+          format: uuid
+        intervalStart:
+          type: string
+          description: The start date of the schedule
+          format: date-time
+        intervalEnd:
+          type: string
+          description: Date endings graphics
+          format: date-time
+        positionId:
+          type: string
+          description: Employee position identifier
+          format: uuid
+        strictLunch:
+          type: boolean
+          description: Is it a strict lunch
+        paidLunch:
+          type: boolean
+          description: Is lunch paid
+        shortened:
+          type: boolean
+          description: Is the day shortened
+    employee-group:
+      title: Group of employees
+      required:
+        - name
+        - parent
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the group of employees
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier of the group of employees
+        name:
+          type: string
+          description: The name of the group of employees
+        parentId:
+          type: string
+          description: Identifier of the group of the Retor
+          format: uuid
+        number:
+          type: string
+          description: Group number of employees
+    employee-base-group:
+      title: Basic group of employees
+      required:
+        - name
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: External identifier of the basic group of employees
+        name:
+          type: string
+          description: The name of the basic group of employees
+        number:
+          type: string
+          description: Basic group number of employees
+    time-sheet-employee-request:
+      title: Data for the request
+      required:
+        - month
+      type: object
+      properties:
+        month:
+          type: string
+          description: Date when an employee was created
+          format: date
+      description: Contains a date that is used to search for a working hours of an employee
+    employee-paper:
+      title: Employee paper
+      required:
+        - employeeId
+        - id
+        - Startdate
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the employee's paper
+          format: uuid
+        employeeId:
+          type: string
+          description: The identifier of the employee who owns the paper
+          format: uuid
+        description:
+          type: string
+          description: Description of the employee's paper
+        startDate:
+          type: string
+          description: The start of the employee's paper
+          format: date-time
+        endDate:
+          type: string
+          description: The end of the employee's paper
+          format: date-time
+        typeId:
+          type: string
+          description: Identifier type of employee paper
+          format: uuid
+    employee-paper-simplified-create:
+      title: Request for the creation of an employee
+      required:
+        - Startdate
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the employee's paper
+          format: uuid
+        description:
+          type: string
+          description: Description of the employee's paper
+        startDate:
+          type: string
+          description: The start of the employee's paper
+          format: date-time
+        endDate:
+          type: string
+          description: The end of the employee's paper
+          format: date-time
+        typeId:
+          type: string
+          description: Identifier type of employee paper
+          format: uuid
+    employee-field:
+      title: Additional field of the employee
+      required:
+        - id
+        - name
+        - value
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee field identifier
+          format: uuid
+        employeeId:
+          type: string
+          description: The ID of the employee that the field belongs to
+          format: uuid
+        name:
+          type: string
+          description: The name of the field of the employee
+        value:
+          type: string
+          description: The value of the field of the employee
+      description: If the field does not have a category identifier, then it belongs to personal data
+    employee-field-simplified-create:
+      title: Request for the creation of an additional field field
+      required:
+        - name
+        - value
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee field identifier
+          format: uuid
+        name:
+          type: string
+          description: The name of the field of the employee
+        value:
+          type: string
+          description: The value of the field of the employee
+      description: If the field does not have a category identifier, then it belongs to personal data
+    access-event-sync:
+      title: Request to add access events
+      required:
+        - accessEvents
+      type: object
+      properties:
+        accessEvents:
+          type: array
+          description: List of access events
+          items:
+            $ref: '#/components/schemas/access-event-view-model'
+    employee-pass-crud-request:
+      title: Request for the creation and editing of an employee
+      required:
+        - banned
+        - currentCount
+        - employeeId
+        - Startdate
+        - typeId
+      type: object
+      properties:
+        employeeId:
+          type: string
+          description: Identifier of an employee who owns a pass
+          format: uuid
+        banned:
+          type: boolean
+          description: Whether the pass is blocked
+        typeId:
+          type: string
+          description: Identifier type of pass
+          format: uuid
+        startDate:
+          type: string
+          description: The start date of the passage
+          format: date-time
+        endDate:
+          type: string
+          description: Date endings miss
+          format: date-time
+        currentCount:
+          minimum: 0
+          type: integer
+          description: The current number of passes for passing
+    employee-simplified-patch-update-dto:
+      title: Request to the Patch-change of an employee of an employee
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: External identifier of an employee
+        name:
+          $ref: '#/components/schemas/employee-name'
+        number:
+          type: string
+          description: The identification number of the employee
+        email:
+          type: string
+          description: Email address
+          format: email
+        phone:
+          type: string
+          description: Employee phone
+        dateOfBirth:
+          type: string
+          description: Date of birth
+          format: date
+        groupId:
+          type: string
+          description: The identifier of the group of the employee to whom he belongs
+          format: uuid
+        positionAssignments:
+          uniqueItems: true
+          type: array
+          description: List of an employee's appointments for positions
+          items:
+            $ref: '#/components/schemas/employee-position-assignment-patch-update-dto'
+      description: Contains the characteristics that need to be changed from an existing employee
+      x-tags:
+        - Employees
+    employee-simplified-input:
+      title: Request to change the employee
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: External identifier of an employee
+        name:
+          $ref: '#/components/schemas/employee-name'
+        number:
+          type: string
+          description: The identification number of the employee
+        email:
+          type: string
+          description: Email address
+          format: email
+        phone:
+          type: string
+          description: Employee phone
+        dateOfBirth:
+          type: string
+          description: Date of birth
+          format: date
+        groupId:
+          type: string
+          description: The identifier of the group of the employee to whom he belongs
+          format: uuid
+        papers:
+          uniqueItems: true
+          type: array
+          description: List of employee documents
+          items:
+            $ref: '#/components/schemas/employee-paper'
+        passes:
+          uniqueItems: true
+          type: array
+          description: List of employee passes
+          items:
+            $ref: '#/components/schemas/employee-pass'
+        positionAssignments:
+          uniqueItems: true
+          type: array
+          description: List of an employee's appointments for positions
+          items:
+            $ref: '#/components/schemas/employee-position-assignment'
+        categories:
+          uniqueItems: true
+          type: array
+          description: List of employee categories
+          items:
+            $ref: '#/components/schemas/employee-category'
+        profileFieldValues:
+          uniqueItems: true
+          type: array
+          description: List of values of the field field fields
+          items:
+            $ref: '#/components/schemas/employee-profile-field-value'
+        fields:
+          uniqueItems: true
+          type: array
+          description: List of employee fields
+          items:
+            $ref: '#/components/schemas/employee-field'
+        tags:
+          uniqueItems: true
+          type: array
+          description: List of employee marks
+          items:
+            $ref: '#/components/schemas/employee-category'
+      description: Contains the main fields for creating an employee
+      x-tags:
+        - Employees
+    employee-simplified-create:
+      title: Request to create an employee
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: External identifier of an employee
+        name:
+          $ref: '#/components/schemas/employee-name'
+        number:
+          type: string
+          description: The identification number of the employee
+        email:
+          type: string
+          description: Email address
+          format: email
+        phone:
+          type: string
+          description: Employee phone
+        dateOfBirth:
+          type: string
+          description: Date of birth
+          format: date
+        groupId:
+          type: string
+          description: The identifier of the group of the employee to whom he belongs
+          format: uuid
+        papers:
+          uniqueItems: true
+          type: array
+          description: List of employee documents
+          items:
+            $ref: '#/components/schemas/employee-paper-simplified-create'
+        passes:
+          uniqueItems: true
+          type: array
+          description: List of employee passes
+          items:
+            $ref: '#/components/schemas/employee-pass-simplified-create'
+        positionAssignments:
+          uniqueItems: true
+          type: array
+          description: List of an employee's appointments for positions
+          items:
+            $ref: '#/components/schemas/employee-position-assignment-simplified-create'
+        categories:
+          uniqueItems: true
+          type: array
+          description: List of employee categories
+          items:
+            $ref: '#/components/schemas/employee-category-simplified-create'
+        profileFieldValues:
+          uniqueItems: true
+          type: array
+          description: List of values of the field field fields
+          items:
+            $ref: '#/components/schemas/employee-profile-field-value-simplified-create'
+        fields:
+          uniqueItems: true
+          type: array
+          description: List of employee fields
+          items:
+            $ref: '#/components/schemas/employee-field-simplified-create'
+      description: Contains the main fields for creating an employee
+      x-tags:
+        - Employees
+    employee-identifiers-query:
+      title: Request for the creation of employee identifiers
+      type: object
+      properties:
+        pin:
+          type: string
+          description: PIN-code of the employee
+        macAddress:
+          type: string
+          description: MAC Employee Address
+        rfid:
+          $ref: '#/components/schemas/employee-rfid'
+        fingerprint:
+          $ref: '#/components/schemas/employee-fingerprint'
+      description: Contains information about PIN, RFID, FINGERPRINTS and MACADDRESS to create and edit identifiers
+    employee-simplified-patch-update-output-dto:
+      title: Presentation of an employee updated by a PATCH operation
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique employee identifier
+          format: UUID
+        externalId:
+          type: string
+          description: External identifier of an employee
+        name:
+          $ref: '#/components/schemas/employee-name'
+        number:
+          type: string
+          description: The identification number of the employee
+        email:
+          type: string
+          description: Email address
+          format: email
+        phone:
+          type: string
+          description: Employee phone
+        dateOfBirth:
+          type: string
+          description: Date of birth
+          format: date
+        groupId:
+          type: string
+          description: The identifier of the group of the employee to whom he belongs
+          format: uuid
+        positionAssignments:
+          uniqueItems: true
+          type: array
+          description: List of an employee's appointments for positions
+          items:
+            $ref: '#/components/schemas/employee-position-assignment'
+      description: Contains the characteristics of an updated employee
+      x-tags:
+        - Employees
+    time-tracking-statistics-request:
+      title: Request for statistics on working time
+      required:
+        - employeeIds
+        - end
+        - start
+      type: object
+      properties:
+        start:
+          type: string
+          description: The date and time of the beginning of the formation of the request
+          format: date
+        end:
+          type: string
+          description: Date and time of completion of the formation of the request
+          format: date
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: Defines a list of employees for whom there will be a search for entities
+          items:
+            type: string
+            format: uuid
+        timeTrackingContourIds:
+          uniqueItems: true
+          type: array
+          description: List of identifiers of the outpatient contours of working hours by which the calculation will occur
+          items:
+            type: string
+            format: uuid
+        timeTrackingOfficeIds:
+          uniqueItems: true
+          type: array
+          description: List of identifiers of working hours accounting for which the calculation will occur
+          items:
+            type: string
+            format: uuid
+      description: List of employees and temporary interval to receive briefings and certificates
+    employee-profile-field-value:
+      title: The value of the field profile field
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the value of the field profile field
+          format: uuid
+        fieldId:
+          type: string
+          description: Employee profile identifier
+          format: uuid
+        value:
+          type: string
+          description: Directly the value of the field profile field
+    employee-profile-field-value-simplified-create:
+      title: Request to create the value of the field profile field
+      required:
+        - fieldId
+        - value
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the value of the field profile field
+          format: uuid
+        fieldId:
+          type: string
+          description: Employee profile identifier
+          format: uuid
+        value:
+          type: string
+          description: Directly the value of the field profile field
+    access-event-access-reason-value:
+      title: Meaning of access reason of access event
+      required:
+        - direction
+        - orderNumber
+        - reasonId
+      type: object
+      properties:
+        reasonId:
+          type: string
+          description: Identifier of the reasons used
+          format: uuid
+        direction:
+          $ref: '#/components/schemas/access-event-access-reason-direction-type'
+        description:
+          type: string
+          description: Optional description introduced by an employee
+        orderNumber:
+          minimum: 0
+          type: integer
+          description: The order in which this reason was chosen (if it was chosen reasons at a time - for example, the completion of lunch and the beginning of the working interval)
+      description: Values of the reason for the access that Veil chose at the entrance
+    access-event-document-value:
+      title: The value of documents and passes of access events
+      required:
+        - documentType
+        - id
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the document (briefing or certificate) or pass, which was checked during the passage
+          format: uuid
+        typeId:
+          type: string
+          description: Identifier of the type of document (briefing or certificate) or pass, which was checked during the passage
+          format: uuid
+        documentType:
+          $ref: '#/components/schemas/access-event-document-type'
+    access-event-identifier:
+      title: Access event identifier
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/access-event-identifier-type'
+        fingerprintType:
+          $ref: '#/components/schemas/fingerprint-type'
+        rfidId:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: RFID identifier used in the aisle
+          format: byte
+      description: The identifier that was used in the identification of the employee in the access event
+    employee-identifiers-response:
+      title: Employee identifiers
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique employee identifier
+          format: uuid
+        pin:
+          type: string
+          description: PIN-code of the employee
+        macAddress:
+          type: string
+          description: MAC Employee Address
+        rfids:
+          uniqueItems: true
+          type: array
+          description: RFID employee identifiers
+          items:
+            $ref: '#/components/schemas/employee-rfid'
+        fingerprints:
+          uniqueItems: true
+          type: array
+          description: Employee gait
+          items:
+            $ref: '#/components/schemas/employee-fingerprint'
+      description: Contains information about PIN, RFID, FINGERPRINTS employee
+    employee-identifiers:
+      title: Employee identifiers
+      required:
+        - fingerprints
+        - rfids
+      type: object
+      properties:
+        pin:
+          type: string
+          description: PIN-code of the employee
+        macAddress:
+          type: string
+          description: MAC Employee Address
+        rfids:
+          uniqueItems: true
+          type: array
+          description: RFID employee identifiers
+          items:
+            $ref: '#/components/schemas/employee-rfid'
+        fingerprints:
+          uniqueItems: true
+          type: array
+          description: Employee gait
+          items:
+            $ref: '#/components/schemas/employee-fingerprint'
+    employee-name:
+      title: The name of the employee
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Name
+        lastName:
+          type: string
+          description: Surname
+        middleName:
+          type: string
+          description: Middle name/average name
+    position-interval:
+      title: Position interval
+      required:
+        - positionId
+      type: object
+      properties:
+        intervalStart:
+          type: string
+          description: The start time of the interval
+          format: date-time
+        intervalEnd:
+          type: string
+          description: The end of the interval
+          format: date-time
+        positionId:
+          type: string
+          description: ID positions
+          format: uuid
+    lunch-break-interval:
+      title: Lunch interval
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+        - required:
+            - breakDurationMillis
+            - scheduleEventId
+          type: object
+          properties:
+            scheduleEventId:
+              type: string
+              description: ID schedule events
+              format: uuid
+            breakDurationMillis:
+              type: integer
+              description: Lunch time in milliseconds
+              format: int64
+    reason-interval:
+      title: Interval of reasons
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+        - required:
+            - timeTrackingReasonedIntervalId
+            - hour type
+          type: object
+          properties:
+            timeTrackingReasonedIntervalId:
+              type: string
+              description: The identifier of the external interval
+              format: uuid
+            reasonId:
+              type: string
+              description: ID reasons
+              format: uuid
+            timeType:
+              $ref: '#/components/schemas/interval-time-type'
+            scheduleEventId:
+              type: string
+              description: ID schedule events
+              format: uuid
+    work-shift-interval:
+      title: Working day interval
+      required:
+        - accessSequenceFouls
+        - attended
+        - currentShift
+        - currentlyPresent
+        - employeeMarks
+        - intervalEnd
+        - intervalStart
+        - intervals
+        - lunchBreakIntervals
+        - positionIntervals
+        - shiftDate
+        - shiftType
+        - statistics
+        - uncutScheduleIntervals
+        - unprocessedCalendarInterval
+        - unprocessedReasonIntervals
+        - unprocessedScheduleIntervals
+        - unprocessedWorkIntervals
+      type: object
+      properties:
+        shiftDate:
+          type: string
+          description: The date of the working day
+          format: date
+        shiftType:
+          $ref: '#/components/schemas/work-shift-type'
+        intervalStart:
+          type: string
+          description: The time of the start of the working day
+          format: date-time
+        intervalEnd:
+          type: string
+          description: Ending time
+          format: date-time
+        intervals:
+          type: array
+          description: Combined list of intervals containing a non -oversking sequence
+          items:
+            $ref: '#/components/schemas/combined-interval'
+        unprocessedWorkIntervals:
+          type: array
+          description: List of employee intervals
+          items:
+            $ref: '#/components/schemas/base-work-interval'
+        unprocessedReasonIntervals:
+          type: array
+          description: List of causal intervals of an employee
+          items:
+            $ref: '#/components/schemas/reason-interval'
+        unprocessedScheduleIntervals:
+          type: array
+          description: List of employee schedule intervals
+          items:
+            $ref: '#/components/schemas/schedule-interval'
+        uncutScheduleIntervals:
+          type: array
+          description: List of employee schedule intervals
+          items:
+            $ref: '#/components/schemas/schedule-interval'
+        unprocessedCalendarInterval:
+          type: array
+          description: List of Calendar intervals of an employee
+          items:
+            $ref: '#/components/schemas/calendar-interval'
+        lunchBreakIntervals:
+          type: array
+          description: List of intervals for lunch
+          items:
+            $ref: '#/components/schemas/lunch-break-interval'
+        positionIntervals:
+          type: array
+          description: List of intervals of the employee of a certain position
+          items:
+            $ref: '#/components/schemas/position-interval'
+        accessSequenceFouls:
+          type: array
+          description: Violations of the sequence of passages
+          items:
+            $ref: '#/components/schemas/access-sequence-foul'
+        statistics:
+          $ref: '#/components/schemas/work-shift-interval-statistics'
+        workTimeStart:
+          type: string
+          description: Time of the beginning of the first working interval on this working day
+          format: date-time
+        workTimeEnd:
+          type: string
+          description: The end of the last working interval on this working day
+          format: date-time
+        attended:
+          type: boolean
+          description: Whether a visit to an employee on this working day was noted
+        scheduleStart:
+          type: string
+          description: The start time of the first schedule interval on this working day
+          format: date-time
+        scheduleEnd:
+          type: string
+          description: The end of the last schedule interval on this working day
+          format: date-time
+        currentShift:
+          type: boolean
+          description: Is this working day the current
+        currentlyPresent:
+          type: boolean
+          description: Is the employee present at the time of receiving statistics
+      description: |
+        The interval of the working day is --- the essence that is untied from the calendar day.
+        For example, a working day may begin at 12:00 on the current calendar day and end at 12:00 the next day.
+        Thus, for example, you can move all the working intervals of employees working on a night shift on one working day, even despite the fact that from a calendar point of view these are different days.
+        Restrictions:
+          1. There may be only one working day with the specified date for each particular employee,
+          2. Business days cannot intersect
+          3. Business days cannot leave voids among themselves. So, if the previous working day ended at 12:00 of the current calendar day, then the next working day should also begin at 12:00"
+    schedule-interval:
+      title: Schedule interval
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+        - required:
+            - scheduleEventId
+            - hour type
+          type: object
+          properties:
+            scheduleEventId:
+              type: string
+              description: ID schedule events
+              format: uuid
+            timeType:
+              $ref: '#/components/schemas/interval-time-type'
+    time-calendar-event:
+      title: Calendar event
+      required:
+        - allday
+        - confirmed
+        - employeeId
+        - end
+        - id
+        - start
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier of the calendar event
+        employeeId:
+          type: string
+          format: uuid
+        typeId:
+          type: string
+          format: uuid
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        description:
+          type: string
+        confirmed:
+          type: boolean
+        allDay:
+          type: boolean
+      description: ''
+      x-tags:
+        - Time Calendar Events
+    employee-schedule-event:
+      title: Calendar event
+      required:
+        - eventDate
+        - id
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique calendar event identifier
+          format: uuid
+        eventDate:
+          type: string
+          description: The time when this event was formed on the controller
+          format: date-time
+        description:
+          type: string
+          description: Description of the event
+        type:
+          $ref: '#/components/schemas/employee-schedule-work-calendar-event-type'
+      description: Contains the calendar events of the employee during this period of time
+    calendar-interval:
+      title: Calendar interval
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+        - required:
+            - calendarEventId
+            - calendar event type policy
+            - countsAsWorkTime
+          type: object
+          properties:
+            calendarEventId:
+              type: string
+              description: ID of the calendar event
+              format: uuid
+            calendarEventTypeId:
+              type: string
+              description: ID type ID calendar event
+              format: uuid
+            countsAsWorkTime:
+              type: boolean
+              description: Take into account as working
+    employee-profile-category:
+      title: Category of employees profile
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee profile category identifier
+          format: uuid
+        name:
+          type: string
+          description: Name of the category of the profile of employees
+    employee-category:
+      title: Category of employees
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee category identifier
+          format: uuid
+        name:
+          type: string
+          description: The name of the category of employees
+    employee-category-simplified-create:
+      title: Request to create a category of employees
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee category identifier
+          format: uuid
+        name:
+          type: string
+          description: The name of the category of employees
+    time-tracking-contour:
+      title: Contour
+      required:
+        - id
+        - name
+        - officeId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        officeId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          format: string
+        accessPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/time-tracking-contour-access-point'
+    access-event-coordinates:
+      title: Coordinates of the access event
+      required:
+        - accuracy
+        - latitude
+        - longitude
+      type: object
+      properties:
+        latitude:
+          type: number
+          description: Latitude
+        longitude:
+          type: number
+          description: Long
+        accuracy:
+          type: number
+          description: A radius in which with a 68% probability there will be real coordinates of the object
+      description: Coordinates that were recorded when creating an event
+    employee-position-assignment:
+      title: The appointment of an employee for a position
+      required:
+        - assignedFrom
+        - employeeId
+        - id
+        - position
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the destination
+          format: uuid
+        employeeId:
+          type: string
+          description: Employee identifier
+          format: uuid
+        position:
+          $ref: '#/components/schemas/employee-position'
+        assignedFrom:
+          type: string
+          description: The date of the start of the destination
+          format: date-time
+        assignedTo:
+          type: string
+          description: The end of the destination
+          format: date-time
+        wageRateHours:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          description: Bid
+        paymentRatePerHour:
+          minimum: 0
+          type: number
+          description: Payment for time
+        personnelNumber:
+          type: string
+          description: A table number
+        type:
+          $ref: '#/components/schemas/employee-position-assignment-type'
+    employee-position-assignment-simplified-create:
+      title: Request for the appointment of an employee for a position
+      required:
+        - assignedFrom
+        - position
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the destination
+          format: uuid
+        position:
+          $ref: '#/components/schemas/employee-position'
+        assignedFrom:
+          type: string
+          description: The date of the start of the destination
+          format: date-time
+        assignedTo:
+          type: string
+          description: The end of the destination
+          format: date-time
+        wageRateHours:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          description: Bid
+        paymentRatePerHour:
+          minimum: 0
+          type: number
+          description: Payment for time
+        personnelNumber:
+          type: string
+          description: A table number
+        type:
+          $ref: '#/components/schemas/employee-position-assignment-type'
+    employee-position-assignment-patch-update-dto:
+      title: Request for updating the appointment of an employee to a position
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the destination
+          format: uuid
+        position:
+          $ref: '#/components/schemas/employee-position'
+        assignedFrom:
+          type: string
+          description: The date of the start of the destination
+          format: date-time
+        assignedTo:
+          type: string
+          description: The end of the destination
+          format: date-time
+        wageRateHours:
+          minimum: 0
+          exclusiveMinimum: false
+          type: number
+          description: Bid
+        paymentRatePerHour:
+          minimum: 0
+          type: number
+          description: Payment for time
+        personnelNumber:
+          type: string
+          description: A table number
+        type:
+          $ref: '#/components/schemas/employee-position-assignment-type'
+    schedule-event-batch-delete-query:
+      title: Request for removal shifts
+      description: Defines the interval in which and employees for whom shifts will be removed
+      allOf:
+        - $ref: '#/components/schemas/employee-calendar-query'
+        - type: object
+          properties:
+            strategy:
+              type: string
+              description: "Determines which shifts to delete. *Open*, *assigned* or *all* respectively"
+              enum:
+                - DELETE_OPEN_EVENTS
+                - DELETE_APPOINTED_EVENTS
+                - DELETE_ALL_EVENTS
+    access-event-direction:
+      title: Direction of the access event
+      type: string
+      description: |
+        The direction in which the passage was recorded.\nIt may be relative if a multi -contour system is used.
+          * `in` --- direction to input
+          * `out` --- direction to exit
+          * `unknown`--- The direction is not defined"
+      enum:
+        - in
+        - out
+        - unknown
+    access-sequence-foul:
+      title: Violation of the sequence of passage
+      required:
+        - occurrenceTime
+        - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/access-sequence-foul-type'
+        occurrenceTime:
+          type: string
+          description: The time of violation of the passage
+          format: date-time
+        boundAccessEventId:
+          type: string
+          description: ID of a related access event
+          format: uuid
+    time-control-foul:
+      title: Violation of working hours
+      required:
+        - occurrenceTime
+        - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/time-control-foul-type'
+        occurrenceTime:
+          type: string
+          description: Date that is compared with a violation of working hours
+          format: date-time
+        boundAccessEventId:
+          type: string
+          description: The identifier of the access event, which entailed improving working hours
+          format: uuid
+    missed-outside-schedule-interval:
+      title: Unexplored interval outside the schedule
+      allOf:
+        - $ref: '#/components/schemas/combined-interval'
+    missed-schedule-interval:
+      title: Unexplored schedule
+      allOf:
+        - $ref: '#/components/schemas/schedule-interval'
+    employee-schedule-lunch:
+      title: Graphic dinners
+      type: object
+      properties:
+        intervalStart:
+          type: string
+          description: The time of the start of dinner
+          format: date-time
+        intervalEnd:
+          type: string
+          description: The end of the end of the dinner
+          format: date-time
+      description: Contains information about the beginning and end of the employee's lunch
+    combined-interval:
+      title: United interval
+      required:
+        - intervalEnd
+        - intervalStart
+        - intervalType
+        - hour type
+      type: object
+      properties:
+        intervalStart:
+          type: string
+          description: The start time of the interval
+          format: date-time
+        intervalEnd:
+          type: string
+          description: The end of the interval
+          format: date-time
+        positionId:
+          type: string
+          description: ID positions
+          format: uuid
+        timeType:
+          $ref: '#/components/schemas/interval-time-type'
+        intervalType:
+          type: string
+          description: Interval type
+      discriminator:
+        propertyName: intervalType
+    time-tracking-object:
+      title: Object
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          format: string
+    employee-schedule-work-calendar-event-type:
+      title: Determines the type of day
+      type: string
+      description: |
+        Determines the type of day.
+        * `work-day` --- Working day
+        * `shortened -work-day` --- abbreviated day
+        * `day-off` --- weekend"
+      enum:
+        - work-day
+        - shortened-work-day
+        - day-off
+    employee-fingerprint:
+      title: The fingerprint of the employee
+      required:
+        - employeeId
+        - id
+        - quality
+        - template
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee fingerprint identifier
+          format: uuid
+        quality:
+          minimum: 0
+          type: integer
+          description: The quality of the employee is
+        template:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: Fingerprint
+          format: byte
+        manufacturer:
+          type: string
+          description: Source and format of a fingerprint fingerprint
+        type:
+          $ref: '#/components/schemas/fingerprint-type'
+        employeeId:
+          type: string
+          description: The identifier of the employee who owns the imprint
+          format: uuid
+    employee-position:
+      title: Position of an employee
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Position identifier
+          format: uuid
+        name:
+          type: string
+          description: The name of the position
+        externalId:
+          type: string
+          description: External position identifier
+    employee-calendar-query:
+      title: Search request for calendar events of employees
+      type: object
+      properties:
+        range:
+          $ref: '#/components/schemas/query-range'
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: Defines a list of employees for whom there will be a search for entities
+          items:
+            type: string
+            format: uuid
+      description: Defines the interval and employees in which the search will take place
+    employee-schedule-interval-query:
+      title: Search request for employees
+      allOf:
+        - $ref: '#/components/schemas/employee-calendar-query'
+        - type: object
+          properties:
+            returnOpenShifts:
+              type: boolean
+              description: Determines whether to return the graphs not attached to a specific employee
+    employee-group-query-request:
+      title: Search request for groups of employees
+      required:
+        - groupIds
+      type: object
+      properties:
+        groupIds:
+          uniqueItems: true
+          type: array
+          description: List of identifiers of groups of employees for which the search will take place
+          items:
+            type: string
+            format: uuid
+    employee-paper-query-request:
+      title: Search request for briefings and certificates of employees
+      type: object
+      properties:
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: Defines a list of employees for whom will search for entities
+          items:
+            type: string
+            format: uuid
+        range:
+          $ref: '#/components/schemas/query-range'
+      description: List of employees and temporary interval to receive briefings and certificates
+    employee-pass-query-request:
+      title: Search request for employee passes
+      type: object
+      properties:
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: Defines a list of employees for whom will search for entities
+          items:
+            type: string
+            format: uuid
+        range:
+          $ref: '#/components/schemas/query-range'
+      description: List of employees and temporary interval to receive passes
+    access-event-query-request:
+      title: Search request for access events
+      type: object
+      properties:
+        range:
+          $ref: '#/components/schemas/query-range'
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: Defines a list of employees for whom there will be a search for entities
+          items:
+            type: string
+            format: uuid
+    employee-query-request:
+      title: Search request for employees
+      type: object
+      properties:
+        groupIds:
+          uniqueItems: true
+          type: array
+          description: List of identifiers of groups of employees for which the search will be carried out
+          items:
+            type: string
+            format: uuid
+    query-range:
+      title: Search interval
+      type: object
+      properties:
+        since:
+          type: string
+          description: What point of time to start the search
+          format: date-time
+        upTo:
+          type: string
+          description: At what point of time to finish the search
+          format: date-time
+      description: Defines the interval in which the search will take place
+    employee-profile-field:
+      title: The field of the employee profile
+      required:
+        - categoryId
+        - id
+        - name
+        - required
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the field profile field
+          format: uuid
+        categoryId:
+          type: string
+          description: The category identifier that this field
+          format: uuid
+        name:
+          type: string
+          description: The name of the field profile field
+        type:
+          $ref: '#/components/schemas/employee-profile-field-type'
+        required:
+          type: boolean
+          description: Is the field mandatory
+        minLength:
+          type: integer
+          description: Minimum length
+        maxLength:
+          type: integer
+          description: Maximum length
+        regExp:
+          type: string
+          description: Regular expression to which the value must correspond to
+        minValue:
+          type: number
+          description: Minimum value
+          format: double
+        maxValue:
+          type: number
+          description: Maximum value
+          format: double
+        list:
+          type: array
+          description: List of values that can take the field value
+          items:
+            type: string
+    employee-pass:
+      title: Passing the employee
+      required:
+        - banned
+        - currentCount
+        - employeeId
+        - id
+        - Startdate
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the employee pass
+          format: uuid
+        employeeId:
+          type: string
+          description: Identifier of an employee who owns a pass
+          format: uuid
+        banned:
+          type: boolean
+          description: Whether the pass is blocked
+        typeId:
+          type: string
+          description: Identifier type of pass
+          format: uuid
+        startDate:
+          type: string
+          description: The start date of the passage
+          format: date-time
+        endDate:
+          type: string
+          description: Date endings miss
+          format: date-time
+        currentCount:
+          minimum: 0
+          type: integer
+          description: The current number of passes for passing
+    employee-pass-simplified-create:
+      title: Request for the creation of an employee
+      required:
+        - banned
+        - currentCount
+        - Startdate
+        - typeId
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the employee pass
+          format: uuid
+        banned:
+          type: boolean
+          description: Whether the pass is blocked
+        typeId:
+          type: string
+          description: Identifier type of pass
+          format: uuid
+        startDate:
+          type: string
+          description: The start date of the passage
+          format: date-time
+        endDate:
+          type: string
+          description: Date endings miss
+          format: date-time
+        currentCount:
+          minimum: 0
+          type: integer
+          description: The current number of passes for passing
+    manual-interval:
+      title: Manual interval
+      allOf:
+        - $ref: '#/components/schemas/base-work-interval'
+        - required:
+            - countsAsWorkTime
+            - overridesSchedule
+          type: object
+          properties:
+            overridesSchedule:
+              type: boolean
+              description: Manual interval overlaps (cancel) a work schedule in the place in which they intersect
+            countsAsWorkTime:
+              type: boolean
+              description: Is the manual interval taken into account as working time
+            altererAccountId:
+              type: string
+              description: The user identifier who created this interval
+              format: uuid
+            description:
+              type: string
+              description: Note by a manual interval
+    time-schedule-event:
+      title: Change of employee
+      required:
+        - id
+        - start
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique shift identifier
+          format: uuid
+        externalId:
+          type: string
+          description: External shift identifier
+        employeeId:
+          type: string
+          description: Identifier of an employee who owns a change
+          format: uuid
+        officeId:
+          type: string
+          description: The identifier of the object in which the workplace is located
+          format: uuid
+        description:
+          type: string
+          description: Note
+        start:
+          type: string
+          description: The start date of the shift
+          format: date-time
+        end:
+          type: string
+          description: The end of the shift
+          format: date-time
+        startDateTimeZone:
+          type: string
+          description: Temporary zone of the start of the shift
+        endDateTimeZone:
+          type: string
+          description: Temporary ending zone
+        color:
+          type: string
+          description: The color of the display in the graphs
+        allDay:
+          type: boolean
+          description: Whether the shift is distributed for the whole day
+        positionId:
+          type: string
+          description: Employee position identifier
+          format: uuid
+        strictLunch:
+          type: boolean
+          description: Is it a strict lunch
+        paidLunch:
+          type: boolean
+          description: Is lunch paid
+        published:
+          type: boolean
+          description: Whether the shift is published
+          default: true
+        eligibleEmployees:
+          uniqueItems: true
+          type: array
+          description: A list of employees identifiers by which you can assign a shift if the shift is not yet assigned
+          items:
+            type: string
+            format: uuid
+        lunches:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/employee-schedule-lunch'
+        tags:
+          uniqueItems: true
+          type: array
+          description: Tag
+          items:
+            type: string
+    access-event:
+      title: Access event
+      required:
+        - accessPointId
+        - accessReasonValues
+        - accessRuleId
+        - dataExists
+        - dateTime
+        - deviceId
+        - direction
+        - documentValues
+        - employeeId
+        - id
+        - identifier
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of access event
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier of the access event
+        dateTime:
+          type: string
+          description: The time when this event was formed on the controller
+          format: date-time
+        type:
+          $ref: '#/components/schemas/access-event-type'
+        direction:
+          $ref: '#/components/schemas/access-event-direction'
+        decisionReason:
+          type: array
+          items:
+            $ref: '#/components/schemas/access-event-decision-reason-type'
+        coordinates:
+          $ref: '#/components/schemas/access-event-coordinates'
+        employeeId:
+          type: string
+          description: Employee identifier
+          format: uuid
+        deviceId:
+          type: string
+          description: Controller identifier
+          format: uuid
+        accessPointId:
+          type: string
+          description: Access point identifier
+          format: uuid
+        accessRuleId:
+          type: string
+          description: Identifier of access rules
+          format: uuid
+        dataExists:
+          type: boolean
+          description: Is there a photograph for this event
+        identifier:
+          $ref: '#/components/schemas/access-event-identifier'
+        accessReasonValues:
+          type: array
+          description: List of values of the reasons for access to access
+          items:
+            $ref: '#/components/schemas/access-event-access-reason-value'
+        documentValues:
+          type: array
+          description: List of values of papers and passes of access events
+          items:
+            $ref: '#/components/schemas/access-event-document-value'
+      description: Contains events about the employee’s passage through the access point of one of the controllers registered in the organization
+    access-event-view-model:
+      title: Access event (for conservation)
+      required:
+        - accessPointId
+        - dateTime
+        - direction
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of access event
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier of the access event
+        dateTime:
+          type: string
+          description: The time when this event was formed on the controller
+          format: date-time
+        type:
+          $ref: '#/components/schemas/access-event-type'
+        direction:
+          $ref: '#/components/schemas/access-event-direction'
+        employeeId:
+          type: string
+          description: Employee identifier
+          format: uuid
+        accessPointId:
+          type: string
+          description: Access point identifier
+          format: uuid
+        identifierType:
+          $ref: '#/components/schemas/access-event-identifier-type'
+      description: Contains events about the employee’s passage through the access point of one of the controllers registered in the organization
+    employee:
+      title: Employee
+      required:
+        - account
+        - categories
+        - currentPartTimePositionAssignments
+        - fields
+        - fired
+        - groupId
+        - id
+        - identifiers
+        - name
+        - papers
+        - Parttimpositionsignments
+        - passes
+        - positionAssignments
+      type: object
+      properties:
+        id:
+          type: string
+          description: Employee identifier
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier of an employee
+        name:
+          $ref: '#/components/schemas/employee-name'
+        number:
+          type: string
+          description: The identification number of the employee
+        email:
+          type: string
+          description: Email address
+          format: email
+        phone:
+          type: string
+          description: Employee phone
+        dateOfBirth:
+          type: string
+          description: Date of birth
+          format: date
+        groupId:
+          type: string
+          description: The identifier of the group of the employee to whom he belongs
+          format: uuid
+        account:
+          $ref: '#/components/schemas/employee-account'
+        positionAssignments:
+          uniqueItems: true
+          type: array
+          description: List of an employee's appointments for positions
+          items:
+            $ref: '#/components/schemas/employee-position-assignment'
+        fired:
+          type: boolean
+          description: Whether the employee is fired
+        identifiers:
+          $ref: '#/components/schemas/employee-identifiers'
+        papers:
+          uniqueItems: true
+          type: array
+          description: List of employee papers
+          items:
+            $ref: '#/components/schemas/employee-paper'
+        passes:
+          uniqueItems: true
+          type: array
+          description: List of employee passes
+          items:
+            $ref: '#/components/schemas/employee-pass'
+        categories:
+          uniqueItems: true
+          type: array
+          description: List of employee categories
+          items:
+            $ref: '#/components/schemas/employee-category'
+        profileFieldValues:
+          uniqueItems: true
+          type: array
+          description: List of values of the field employee category
+          items:
+            $ref: '#/components/schemas/employee-profile-field-value'
+        fields:
+          uniqueItems: true
+          type: array
+          description: List of employee fields
+          items:
+            $ref: '#/components/schemas/employee-field'
+    work-shift-interval-statistics:
+      title: Working day statistics
+      required:
+        - autobreaktime
+        - positionTime
+        - reasonCategoryTime
+        - reasonTime
+        - timeControlFouls
+        - timeOutsidePosition
+        - timeOutsideReason
+        - timeOutsideReasonCategory
+        - totalIntervalTime
+        - Total Positiontime
+        - Total Reasontime
+        - workTime
+      type: object
+      properties:
+        workTime:
+          $ref: '#/components/schemas/time-with-required-holder'
+        timeControlFouls:
+          type: array
+          description: List of violations of working access
+          items:
+            $ref: '#/components/schemas/time-control-foul'
+        timeOutsidePosition:
+          $ref: '#/components/schemas/time-holder'
+        positionTime:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/time-holder'
+          description: A dictionary containing the details of the worked time for each position of an employee
+        timeOutsideReasonCategory:
+          $ref: '#/components/schemas/time-holder'
+        reasonCategoryTime:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/time-holder'
+          description: A dictionary containing the details of the worked time for each category of the reasons for the employee
+        timeOutsideReason:
+          $ref: '#/components/schemas/time-holder'
+        reasonTime:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/time-holder'
+          description: A dictionary containing the details of the worked time for each reason of the employee
+        autoBreakTime:
+          $ref: '#/components/schemas/time-holder'
+        totalReasonTime:
+          $ref: '#/components/schemas/time-holder'
+        totalPositionTime:
+          $ref: '#/components/schemas/time-holder'
+        totalIntervalTime:
+          $ref: '#/components/schemas/time-holder'
+      description: |
+        Working day statistics. Contains the preread values of the spent time, combined according to various criteria:
+        * `worktime` --- the general time of the employee, taking into account all the deductions (lunch, etc.) and accounted for external causal intervals
+        * `Timecontrolfouls` --- a list of violations of working hours admitted for a working day
+        * `Timeoutsideposition` --- The time worked out outside the posts
+        * `PositionTime` --- Dictionary containing the details of the spent time for each position, which was scheduled for this working day
+        * `TimeoutsideSonCategory` ---
+        * `reasonCategorytime` ---
+        * `Timeoutsidereson` ---
+        * `reasontime` ---
+        * `autobreaktime` --- time automatically taken from the worker in favor of the established lunch break
+        * `Totalreasontime` --- General causal time worked in this working day
+        * `Totalpositime` --- The total time worked on this working day in positions
+        * `TOTALINTERVALTime` --- General time (designed by internal and external intervals), which was registered by the system'
+    employee-account-status:
+      title: Employee account status
+      type: string
+      description: |
+        * `Active` --- an account exists and active
+        * `disabled` --- Account exists and blocked
+        * `does-not -exist` --- account does not exist'
+      enum:
+        - active
+        - disabled
+        - does-not-exist
+    time-sheet-employee:
+      title: Employee timesheet
+      required:
+        - days
+        - employeeId
+        - groupId
+        - month
+      type: object
+      properties:
+        employeeId:
+          type: string
+          format: uuid
+        month:
+          type: string
+          format: date
+        groupId:
+          type: string
+          format: uuid
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/time-sheet-employee-day'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/time-sheet-comment'
+    time-sheet-employee-day:
+      title: Employee timesheet - Day
+      required:
+        - accountedTimeMillis
+        - attended
+        - dayDate
+        - dayType
+        - schedulePresent
+      type: object
+      properties:
+        dayDate:
+          type: string
+          format: date
+        dayType:
+          type: string
+        accountedTimeMillis:
+          type: integer
+          format: int64
+        accountedTimeHolidayMillis:
+          type: integer
+          format: int64
+        accountedTimeNightMillis:
+          type: integer
+          format: int64
+        accountedOverTimeMillis:
+          type: integer
+          format: int64
+        attended:
+          type: boolean
+        schedulePresent:
+          type: boolean
+        calendarEventIds:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            format: uuid
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/time-sheet-comment'
+    time-sheet-comment:
+      title: Employee timesheet - Comment
+      required:
+        - accountId
+        - postDateTime
+        - value
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        value:
+          type: string
+        postDateTime:
+          type: string
+          format: date-time
+    employee-rfid-type:
+      title: Type RFID employee
+      type: string
+      description: |
+        * `em-marine` --- Em marine
+        * `Mifare-Classic` --- Mifare Classic
+        * `mifare-plus` --- mifare plus
+        * `mifare` --- mifare
+        * `unknown` --- Unknown type RFID'
+      enum:
+        - marty
+        - mifare-classic
+        - Mifare-Plus
+        - unknown
+        - Mifare
+    interval-time-type:
+      title: Type of interval time
+      type: string
+      description: |
+        * `Day-Time` --- Day time
+        * `night-time`-at night'
+      enum:
+        - day-time
+        - night-time
+    access-event-document-type:
+      title: Type of document of access events
+      type: string
+      description: |
+        * `Employee-Paper` --- Document (briefing or certificate) of an employee
+        * `embloye-pass` --- employee pass'
+      enum:
+        - employee-paper
+        - employee-pass
+    employee-paper-type:
+      title: Type of an employee document
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier type of employee document
+          format: uuid
+        name:
+          type: string
+          description: Name type of employee document
+        description:
+          type: string
+          description: Description of the type of employee document
+    access-event-identifier-type:
+      title: Type of access event identifier
+      type: string
+      description: |
+        The type of identifier that was used in the aisle.
+          * `finger` --- fingerprint
+          * `rfid` --- Rfid card
+          * `pin` --- Pin-code
+          * `button` --- Door opening button
+          * `Button-alarm` --- Fire anxiety button
+          * `mac-ddress` --- MAS of an employee device
+          * `unknown` --- The identifier is unknown
+      enum:
+        - finger
+        - rfid
+        - pin
+        - button
+        - button-alarm
+        - mac-address
+        - unknown
+    employee-position-assignment-type:
+      title: Type of appointment of an employee for a position
+      type: string
+      description: |
+        * `hird` --- hired
+        * `fired` --- fired
+        * `transferred` --- transferred to another position'
+      enum:
+        - hired
+        - fired
+        - transferred
+    time-calendar-event-type:
+      title: Type of calendar event
+      required:
+        - id
+        - name
+        - requiresConfirmation
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        externalId:
+          type: string
+          description: External identifier type of calendar event
+        name:
+          type: string
+        abbreviation:
+          type: string
+        color:
+          type: string
+        requiresConfirmation:
+          type: boolean
+        hidden:
+          type: boolean
+        reasonable:
+          type: boolean
+      x-tags:
+        - Time Calendar Events
+    access-event-access-reason-direction-type:
+      title: Type of direction of reason for access to access
+      type: string
+      description: |
+        '* `Begining` --- The beginning of the reason
+         * `end` --- ending of the cause
+         * `undefined` --- The direction of the reason is not given'
+      enum:
+        - beginning
+        - end
+        - undefined
+    access-sequence-foul-type:
+      title: Type of violation of the sequence of passage
+      type: string
+      description: '* `no-linked-out` --- no related exit
+
+        * `no-linked-in` --- no related entrance'
+      enum:
+        - no-linked-out
+        - no-linked-in
+    time-control-foul-type:
+      title: Type of violation of working hours
+      type: string
+      description: |
+        "The following types of working time records are possible:
+          * `early-leave` --- Early care
+          * `LATE-COME` --- delay
+          * `Ahead-off-Time-Late-Come` --- Indication of delay before the employee's direct arrival
+          * `No-come` --- failure to appear
+          * `under-time` --- shortage
+          * `lunch-no-come` --- failure to appear for
+          * `lunch-early-come` --- Early coming to lunch
+          * `lunch-dress' --- Late departure from lunch
+          * `lunch-Reason-out-lunch-interval` --- lunch not on schedule"
+      enum:
+        - early-leave
+        - ahead-of-time-late-come
+        - late-come
+        - no-like
+        - under-time
+        - lunch-no-come
+        - lunch-early-come
+        - lunch-late-leave
+        - lunch-reason-outside-lunch-interval
+        - lunch-over-usage
+        - auto-closed
+        - truancy
+    fingerprint-type:
+      title: Type of fingerprint
+      type: string
+      description: |
+        "Type of fingerprint.
+          * `left-thumb` --- the left large
+          * `left-index` --- left index
+          * `left -Middle` --- left average
+          * `left-rat` --- left-handed
+          * `left-little` --- left-wing
+          * `Right-Thumb` --- Right Big
+          * `Right-index` --- Right index
+          * `Right-Middle` --- Right Middle
+          * `Right-Ring` --- Right nameless
+          * `Right-Little` --- Right Mesinets
+          * `unknown` --- type of fingerprint is unknown"
+      enum:
+        - left-thumb
+        - left-index
+        - left-middle
+        - left-ring
+        - left-little
+        - right-thumb
+        - right-index
+        - right-middle
+        - right-ring
+        - right-little
+        - unknown
+    employee-profile-field-type:
+      title: Type of employee profile field
+      type: string
+      enum:
+        - string
+        - number
+        - list
+        - date
+        - datetime
+        - text
+    access-event-decision-reason-type:
+      title: Type of reason for the decision of the access event
+      type: string
+      description: |
+        "Determines the type of reason why the prohibiting or permitting decision on the access event was made.
+          * `Button-Pressed` --- The button was pressed, the user is not identified
+          * `Button-paressed` --- The fire alarm button was pressed, the user is not identified
+          * `Card-CCCCEPTED` --- MARNITERY I received a card
+          * `Access-Crule-Passed` --- Credited by the EXPLOSE
+          * `WAIT -NEXT-TIMEUROUROUT` --- exceeded the waiting time for the user of the identifier
+          * `Card-CCCCEPTOR-Timeout` --- The cartel did not receive a card for a set period of time
+          * `Alcohol-Test-Timeout` --- Alcotester did not provide a result for the established period of time
+          * `Direction-Timeout` --- exceeded the waiting time for entering the direction of the passage
+          * `wrong-employe` --- with double access of access, the wrong second employee was identified
+          * `employe-not-found` --- no employee with the specified identifier
+          * `Access-Crule-Not-Found` --- No access rule for the passage of the identified employee
+          * `Access-Point-Not-Passed` --- an employee cannot go through an access point, since it is absent in the involved access rule
+          * `Antipassback-Not-Passed` --- The employee has already passed in this direction. To preserve the sequence, he must enter the opposite direction
+          * `Schedule-Not-Passed` --- The passage does not satisfy the passage schedule the employee cannot pass according to this rule of access at this period of time
+          * `Access-Document-NOT-PASSED` --- the employee cannot pass, since one or more of his documents is expired or do not satisfy the criteria
+          * `Alcohol-Test-Success` --- Alcotest passed
+          * `alcohol-Test-Fail` --- Alcotest not passed
+          * `employe -is-fired` --- identified employee dismissed
+          * `embloye-pass-not-passed` --- not a check of the employee's check
+          * `Employee-Paper-Not-Passed` --- The audit of the document (certificate, tolerance) of the employee has not been passed
+          * `Weight -measurement-Test-Fail` --- A weight test is not completed
+          * `Weight -measurement-Test-Success` --- Weight checks
+          * `Temperature-Test-Fail` --- A test for the maximum
+          * `Temperature-Test-Success` --- Credit for the maximum temperature
+          * `Mask-Test-Fail` --- The check for the presence of a mask is not passed
+          * `Mask-Test-Success` --- Caught a check for the presence of a mask
+          * `fake-fact-test-fail` --- not a check due to falsification of the face
+          * `fake-fact-test-sauccess` --- Facial face was not forged
+          * `FALEND-to-GET-TEMPerature`--- the temperature was not obtained
+          * `Auto-Closing-Reason-Confirmation-Requied-But-Not-Pressent` --- Non-permit for exit on the dismissal, but it is required
+          * `Access-Point-Passed-Without-intentifier` --- Access point passed without the anticipation of the identifier"
+      enum:
+        - button-pressed
+        - button-alarm-pressed
+        - card-accepted
+        - access-rule-passed
+        - wait-next-identifier-timeout
+        - card-acceptor-timeout
+        - alcohol-test-timeout
+        - direction-timeout
+        - wrong-employee
+        - employee-id-not-found
+        - access-rule-not-found
+        - access-point-not-passed
+        - antipassback-not-passed
+        - schedule-not-passed
+        - access-document-not-passed
+        - alcohol-test-success
+        - alcohol-test-fail
+        - employee-is-fired
+        - employee-pass-not-passed
+        - employee-paper-not-passed
+        - client-photo-verification-failed
+        - client-photo-verification-passed
+        - client-photo-verification-no-response
+        - client-photo-verification-cancel-pressed
+        - client-photo-verification-not-checked
+        - server-photo-verification-failed
+        - server-photo-verification-passed
+        - weight-measurement-test-fail
+        - weight-measurement-test-success
+        - temperature-test-fail
+        - temperature-test-success
+        - mask-test-fail
+        - mask-test-success
+        - fake-face-test-fail
+        - fake-face-test-success
+        - failed-to-get-temperature
+        - auto-closing-reason-confirmation-required-but-not-present
+        - access-point-passed-without-identifier
+    employee-pass-type:
+      title: Type of the employee pass
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier type of employee pass
+          format: uuid
+        name:
+          type: string
+          description: Name type of pass
+        description:
+          type: string
+          description: Description of the type of pass
+        maxCount:
+          minimum: 0
+          exclusiveMinimum: true
+          type: integer
+          description: The maximum number of passes, when the pass is used to the pass, is considered to be unwatted
+    work-shift-type:
+      title: Type of working day
+      type: string
+      description: |
+        'Determines the type of working day.
+         * `work-day` --- Working day
+         * `day-off` --- Housing day'
+      enum:
+        - work-day
+        - day-off
+        - shortened-work-day
+        - undefined
+    access-event-type:
+      title: Type of access event
+      type: string
+      description: |
+        Determines whether the passage was successful or not.
+         * `granted` --- access permissible
+         * `Denied` --- Access is prohibited'
+      enum:
+        - granted
+        - denied
+    external-access-point-request:
+      title: Access point for creating/change
+      required:
+        - deviceIds
+        - name
+      type: object
+      properties:
+        externalId:
+          type: string
+        name:
+          type: string
+        deviceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        latitude:
+          type: number
+          description: Latitude
+        longitude:
+          type: number
+          description: Long
+        isActive:
+          type: boolean
+          default: true
+    external-access-point-response:
+      title: Access point
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        externalId:
+          type: string
+        name:
+          type: string
+        deviceIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        mobileDeviceAnonymousPoint:
+          type: boolean
+        isActive:
+          type: boolean
+        latitude:
+          type: number
+          description: Latitude
+        longitude:
+          type: number
+          description: Long
+    time-tracking-contour-access-point:
+      title: The contour point of the contour
+      required:
+        - accessPointId
+        - entryDirection
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        accessPointId:
+          type: string
+          format: uuid
+        entryDirection:
+          $ref: '#/components/schemas/access-event-direction'
+    employee-simplified-output:
+      title: Simplified display of an employee
+      description: Contains the main fields of the employee
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Employee identifier
+              format: uuid
+            account:
+              $ref: '#/components/schemas/employee-account'
+            fired:
+              type: boolean
+              description: Whether the employee is fired
+        - $ref: '#/components/schemas/employee-simplified-input'
+      x-tags:
+        - Employees
+    time-holder:
+      title: Time accounting
+      required:
+        - Dayinschedulemillis
+        - Daymillis
+        - dayOutsideScheduleMillis
+        - Getululemillis
+        - nightInScheduleMillis
+        - nightMillis
+        - nightOutsideScheduleMillis
+        - outsideScheduleMillis
+        - totalMillis
+      type: object
+      properties:
+        totalMillis:
+          type: integer
+          description: General worked time
+          format: int64
+        dayMillis:
+          type: integer
+          description: Time -time time
+          format: int64
+        nightMillis:
+          type: integer
+          description: Spent
+          format: int64
+        inScheduleMillis:
+          type: integer
+          description: Schedule
+          format: int64
+        outsideScheduleMillis:
+          type: integer
+          description: Time
+          format: int64
+        dayInScheduleMillis:
+          type: integer
+          description: Time worked in the daytime on schedule
+          format: int64
+        nightInScheduleMillis:
+          type: integer
+          description: Time worked at night according to the schedule
+          format: int64
+        nightOutsideScheduleMillis:
+          type: integer
+          description: Time spent at night outside the schedule
+          format: int64
+        dayOutsideScheduleMillis:
+          type: integer
+          description: Time spent in the daytime outside the schedule
+          format: int64
+    time-with-required-holder:
+      title: Accounting for the time required to work out
+      allOf:
+        - $ref: '#/components/schemas/time-holder'
+        - required:
+            - absenceOnScheduleTimeMillis
+            - accountedTimeDayMillis
+            - accountedTimeHolidayMillis
+            - accountedTimeMillis
+            - accountedTimeNightMillis
+            - compensatedTimeDayMillis
+            - compensatedTimeMillis
+            - compensatedTimeNightMillis
+            - holidayWorkTimeMillis
+            - overTimeDayMillis
+            - overTimeMillis
+            - overTimeNightMillis
+            - requiredByScheduleDayMillis
+            - requiredByScheduleMillis
+            - requiredByScheduleNightMillis
+            - workTimeForScheduleCompleteMillis
+          type: object
+          properties:
+            requiredByScheduleMillis:
+              type: integer
+              description: The time required to work on the schedule
+              format: int64
+            requiredByScheduleDayMillis:
+              type: integer
+              description: The time required to work on the schedule in the daytime
+              format: int64
+            requiredByScheduleNightMillis:
+              type: integer
+              description: The time required to work on schedule at night
+              format: int64
+            compensatedTimeMillis:
+              type: integer
+              description: Compensated working hours - a time that was not worked out in the schedule, but then was worked out outside
+              format: int64
+            compensatedTimeDayMillis:
+              type: integer
+              description: Compensated working hours worked during the day
+              format: int64
+            compensatedTimeNightMillis:
+              type: integer
+              description: Compensated working hours worked at night
+              format: int64
+            overTimeMillis:
+              type: integer
+              description: Overtime time is a time that exceeds the one required by the schedule for the current day
+              format: int64
+            overTimeDayMillis:
+              type: integer
+              description: Overtime working hours worked during the day
+              format: int64
+            overTimeNightMillis:
+              type: integer
+              description: Overtime working hours worked at night
+              format: int64
+            accountedTimeMillis:
+              type: integer
+              description: The resulting time, which was taken into account by the system. Depending on the accounting settings, it may only contain time according to the schedule, time according to the schedule
+                and compensated or all the time worked by the employee
+              format: int64
+            accountedTimeDayMillis:
+              type: integer
+              description: Continuing daily working hours
+              format: int64
+            accountedTimeNightMillis:
+              type: integer
+              description: Resulting night working hours
+              format: int64
+            accountedTimeHolidayMillis:
+              type: integer
+              description: Contracting working hours on a weekend
+              format: int64
+            absenceOnScheduleTimeMillis:
+              type: integer
+              description: Absence time recorded on schedule
+              format: int64
+            holidayWorkTimeMillis:
+              type: integer
+              description: Time for the weekend
+              format: int64
+            workTimeForScheduleCompleteMillis:
+              type: integer
+              description: Time until the work schedule is completely closed with time
+              format: int64
+    employee-work-statistics:
+      title: Accounting for working time for an employee
+      required:
+        - computedAt
+        - employeeId
+        - groupId
+        - workShiftIntervals
+      type: object
+      properties:
+        employeeId:
+          type: string
+          description: The identifier of the employee for whom statistics are generated
+          format: uuid
+        groupId:
+          type: string
+          description: The identifier of the employee group for whom statistics are generated
+          format: uuid
+        computedAt:
+          type: string
+          description: The time when statistics were generated
+          format: date-time
+        workShiftIntervals:
+          type: array
+          description: List of working days with statistics
+          items:
+            $ref: '#/components/schemas/work-shift-interval'
+    get-time-schedule-events-request:
+      title: Search request for working schedules of employees
+      required:
+        - employeeIds
+      type: object
+      properties:
+        employeeIds:
+          uniqueItems: true
+          type: array
+          description: List of identifiers of employees for which the search will be carried out
+          items:
+            type: string
+            format: uuid
+        start:
+          type: string
+          description: The date and time of the beginning of the formation of the request
+          format: date-time
+        end:
+          type: string
+          description: Date and time of the end of the formation of the request
+          format: date-time
+        returnOpenShifts:
+          type: boolean
+          description: Return Open shifts
+    forecast-pattern:
+      title: Sample
+      type: object
+      properties:
+        id:
+          type: string
+          description: The template identifier
+          format: uuid
+        organizationId:
+          type: string
+          description: Organization identifier
+          format: uuid
+        metricId:
+          type: string
+          description: Parameter identifier
+          format: uuid
+        name:
+          type: string
+          description: The name of the template
+        startTime:
+          pattern: ^\d{2}:\d{2}:\d{2}$
+          type: string
+          description: The start of the interval of the template
+          example: 45030
+        endTime:
+          pattern: ^\d{2}:\d{2}:\d{2}$
+          type: string
+          description: The end of the interval of the template
+          example: 55830
+        description:
+          type: string
+          description: Description of the template
+    forecast-pattern-data-response:
+      title: Template Data
+      type: object
+      properties:
+        id:
+          type: string
+          description: Template ID
+          format: uuid
+        patternId:
+          type: string
+          description: The template identifier
+          format: uuid
+        value:
+          type: number
+          description: Meaning
+          format: float
+        shiftsCount:
+          type: integer
+          description: Number of shifts
+    train-status-type:
+      title: Status
+      type: string
+      description: Status
+      enum:
+        - CREATED
+        - STARTED
+        - FINISHED
+        - CANCELED
+    page-response:
+      title: Pagination page
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: '#/components/schemas/meta'
+    meta:
+      title: Information about the pagination page
+      type: object
+      properties:
+        offset:
+          type: number
+          description: The number of missed elements
+        limit:
+          type: integer
+          description: Pagination page size
+        count:
+          type: integer
+          description: Total elements on request
+        sort:
+          type: array
+          items:
+            $ref: '#/components/schemas/meta-sort'
+    meta-sort:
+      title: Pagination sorting
+      type: object
+      properties:
+        property:
+          type: string
+          description: The name of the field for which was sorting
+        direction:
+          type: string
+          description: ASC - in an increase in order, desc - in decreasing order
+          enum:
+            - asc
+            - desc
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Paginal page number
+      schema:
+        minimum: 0
+        type: integer
+        default: 0
+    size:
+      name: size
+      in: query
+      description: Pagination page size
+      schema:
+        minimum: 0
+        type: integer
+        default: 10
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The key to the external API. It turns out from the main web application
+      name: X-API-Key
+      in: header
+x-original-swagger-version: '2.0'
